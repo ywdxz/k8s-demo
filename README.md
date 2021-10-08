@@ -139,3 +139,4 @@ kubectl apply -f web-service.yaml
 kubectl apply -f app.yaml
 ```
 ## 浏览器查看结果 
+http://ip:3100/pods
