@@ -133,7 +133,7 @@ docker build -t k8s-test:v4 .
 docker tag k8s-test:v4 ywdxz/k8s-test:v4
 docker push  ywdxz/k8s-test:v4
 ```
-### 部署pod
+### 部署
 ```
 kubectl apply -f web-service.yaml
 kubectl apply -f app.yaml
