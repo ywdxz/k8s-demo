@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
 
 	"net/http"
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/metrics/pkg/apis/metrics/v1alpha1"
+	//"k8s.io/metrics/pkg/apis/metrics/v1alpha1"
 )
 
 func main() {
@@ -25,21 +25,23 @@ func main() {
 		panic(err)
 	}
 
-	data, err := k8sClient.RESTClient().Get().AbsPath("apis/metrics.k8s.io/v1beta1/pods").DoRaw(context.Background())
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
+	/*
+		data, err := k8sClient.RESTClient().Get().AbsPath("apis/metrics.k8s.io/v1beta1/pods").DoRaw(context.Background())
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
 
-	fmt.Println(string(data))
+		fmt.Println(string(data))
 
-	var podMetrics v1alpha1.PodMetricsList
-	json.Unmarshal(data, &podMetrics)
-	for _, item := range podMetrics.Items {
-		container := item.Containers[0]
-		msg := fmt.Sprintf("Container Name: %s \n CPU usage: %s \n Memory usage: %d", item.Name, container.Usage.Cpu().String(), container.Usage.Memory().Value())
-		fmt.Println(msg)
-	}
+		var podMetrics v1alpha1.PodMetricsList
+		json.Unmarshal(data, &podMetrics)
+		for _, item := range podMetrics.Items {
+			container := item.Containers[0]
+			msg := fmt.Sprintf("Container Name: %s \n CPU usage: %s \n Memory usage: %d", item.Name, container.Usage.Cpu().String(), container.Usage.Memory().Value())
+			fmt.Println(msg)
+		}
+	*/
 
 	HTTPServe(k8sClient)
 }
@@ -54,7 +56,7 @@ func HTTPServe(c *kubernetes.Clientset) {
 			fmt.Fprintln(w, string(data))
 		}
 	})
-
+	fmt.Println("HTTPServe start:")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		fmt.Println(err.Error())
 	}
