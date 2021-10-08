@@ -1,6 +1,30 @@
-# 安装 k8s 记录
-基于 centos8
-## 添加阿里源
+
+# k8s-demo
+## TODO:
+- 搭建 k8s 集群
+- 部署一个 pod 输出 k8s 里 cpu 使用率最高的 10 个 pod 
+## 安装 docker
+```
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+
+sudo yum install -y yum-utils
+
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+sudo systemctl start docker
+```
+## 添加 k8s 阿里源
 ```
 tee /etc/yum.repos.d/kubernetes.repo << EOL
 [kubernetes]
@@ -12,7 +36,7 @@ repo_gpgcheck=1
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOL
 ```
-## 添加aliyundocker仓库加速器
+## 配置 daemon.json
 ```
 tee /etc/docker/daemon.json <<EOL
 {
@@ -25,6 +49,10 @@ tee /etc/docker/daemon.json <<EOL
   "storage-driver": "overlay2"
 }
 EOL
+
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 ```
 ## 允许 iptables 检查桥接流量
 ```
@@ -95,4 +123,19 @@ spec:
 ```
 kubectl apply -f components.yaml
 ```
+## 部署 my-app
+### 编译镜像
+```
+cd test 
+go build -o ./app .
 
+docker build -t k8s-test:v4 .
+docker tag k8s-test:v4 ywdxz/k8s-test:v4
+docker push  ywdxz/k8s-test:v4
+```
+### 部署pod
+```
+kubectl apply -f web-service.yaml
+kubectl apply -f app.yaml
+```
+## 浏览器查看结果 
