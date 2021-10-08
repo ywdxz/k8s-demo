@@ -1,23 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: my-app
+  labels:
+     app: web
 spec:
-  selector:
-    matchLabels:
-      run: my-app
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        run: my-app
-    spec:
-      containers:
-      - name: my-app
-        image: ywdxz/k8s-test-1
-        ports:
-        - name: http
-          containerPort: 8080     
-          hostPort: 8080     
-          protocol: TCP
-
+  containers:
+     - name: my-app
+       image: ywdxz/k8s-test-11
+       imagePullPolicy: Never
+       ports:
+         - containerPort: 8080     
