@@ -1,5 +1,5 @@
 # 安装 k8s 记录
-基于 Red Hat 的发行版
+基于 centos8
 ## 添加阿里源
 ```
 tee /etc/yum.repos.d/kubernetes.repo << EOL
