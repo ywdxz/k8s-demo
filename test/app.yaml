@@ -7,7 +7,6 @@ metadata:
 spec:
   containers:
      - name: my-app
-       image: ywdxz/k8s-test-11
-       imagePullPolicy: Never
+       image: ywdxz/k8s-test:v4
        ports:
          - containerPort: 8080     
