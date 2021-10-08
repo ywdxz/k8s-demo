@@ -15,3 +15,9 @@ spec:
       containers:
       - name: my-app
         image: ywdxz/k8s-test-1
+        ports:
+        - name: http
+          containerPort: 8080     
+          hostPort: 8080     
+          protocol: TCP
+
